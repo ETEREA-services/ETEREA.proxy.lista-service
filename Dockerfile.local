@@ -1,0 +1,16 @@
+FROM nginx:latest
+
+# Instalar gettext-base para usar envsubst
+RUN apt-get update && apt-get install -y gettext-base
+
+# Copiar el template de configuración
+COPY nginx.conf.template /etc/nginx/nginx.conf.template
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+
+# Hacer ejecutable el script de entrada
+RUN chmod +x /docker-entrypoint.sh
+
+EXPOSE 80
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]
